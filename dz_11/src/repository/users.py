@@ -23,9 +23,7 @@ async def get_users(skip: int, limit: int, db: Session) -> List[User]:
                     birthdays.append(user)
                 elif difference_day == 6:
                     birthdays.append(user)
-    # for birthday in birthdays:
     return birthdays
-    # (f"{birthday.get('name')}, {birthday.get('birthday')}")
         
 async def get_user(user_id: int, db: Session) -> User:
     return db.query(User).filter(User.id == user_id).first()
