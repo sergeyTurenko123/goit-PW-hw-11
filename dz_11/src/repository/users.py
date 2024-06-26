@@ -8,6 +8,9 @@ import datetime  as dt
 from datetime import datetime  as dtdt
 
 async def get_users(skip: int, limit: int, db: Session) -> List[User]:
+    return db.query(User).offset(skip).limit(limit).all()
+
+async def get_users_birthdays(skip: int, limit: int, db: Session) -> List[User]:
     users = db.query(User).offset(skip).limit(limit).all()
     now = dtdt.today().date()
     birthdays = []

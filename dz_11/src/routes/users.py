@@ -10,13 +10,14 @@ from src.repository import users as repository_users
 
 router = APIRouter(prefix='/users')
 
-
 @router.get("/",  response_model=List[UsersResponse])
-async def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = await repository_users.get_users(skip, limit, db)
-    if users is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
-    return users
+async def read_users(skip: int = 0, limit: int = 100, birthdays: int| None=None, db: Session = Depends(get_db)):
+    users_birthdays = await repository_users.get_users_birthdays(skip, limit, db)
+    users_all = await repository_users.get_users(skip, limit, db)
+    if birthdays:
+        return users_birthdays
+    else:
+        return users_all
 
 @router.get("/{user_id}", response_model=UsersResponse)
 async def read_user(user_id: int, db: Session = Depends(get_db)):
