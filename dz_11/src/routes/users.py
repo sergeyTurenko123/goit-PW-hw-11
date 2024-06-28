@@ -1,17 +1,16 @@
-from typing import List, Annotated, Union
+from typing import List
 
-from fastapi import APIRouter, HTTPException, Depends, status, Query
+from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
-
+from fastapi.security import OAuth2PasswordRequestForm
 from src.database.db import get_db
 from src.schemas import UsersBase, UsersStatusUpdate, UsersResponse
 from src.repository import users as repository_users
 
-
 router = APIRouter(prefix='/users')
 
 @router.get("/",  response_model=List[UsersResponse])
-async def read_users(skip: int = 0, limit: int = 100, birthdays: int| None=None, db: Session = Depends(get_db)):
+async def read_users(birthdays: bool, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users_birthdays = await repository_users.get_users_birthdays(skip, limit, db)
     users_all = await repository_users.get_users(skip, limit, db)
     if birthdays:

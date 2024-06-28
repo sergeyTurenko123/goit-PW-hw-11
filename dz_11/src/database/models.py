@@ -1,8 +1,8 @@
-from sqlalchemy import Column, Integer, String, Boolean, func, Table
+from sqlalchemy import Column, Integer, String, func
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import DateTime, Date
 from sqlalchemy.ext.declarative import declarative_base
+from .db import engine
 
 Base = declarative_base()
 
@@ -16,5 +16,3 @@ class User(Base):
     date_of_birth = Column(Date, nullable=False)
     additional_data = Column(String(50))
     created_at = Column('created_at', DateTime, default=func.now())
-    
-    
